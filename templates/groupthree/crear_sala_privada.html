@@ -1,0 +1,147 @@
+{% extends "blank.html" %}
+
+{% load staticfiles %}
+
+{% block link %}
+{% endblock link %}
+
+{% block styles %}
+{% endblock styles %}
+
+{% block page %}
+<h1>
+	Crear
+	<small>Sala</small>
+</h1>
+{% endblock page %}
+
+{% block breadcrumb %}
+<li class="active">Crear Salas</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box box-primary">
+			<div class="box-body">
+				<div class="box-body table-responsive">
+						{% if sala %}
+								{% if es_privada %}
+												<p id="juegos">
+											    Juegos:<br>
+													<input type="checkbox" value="1"> Polla<br>
+											    <input type="checkbox" value="2"> Trivia<br>
+											    <input type="checkbox" value="3"> Futbol
+											  </p><br/>
+												<div class="row">
+														<div class="col-md-3 text-center">
+																<h4>Usuario Disponibles</h4>
+																<select class="usuarios_disponibles" name="usuarios_disponibles" multiple>
+																		<option value=""></option>
+																</select><br/>
+																<button type="button" name="button" id="btn-invitar">
+																	Invitar
+																</button>
+														</div>
+														<div class="col-md-3 text-center">
+																<h4>Invitados</h4>
+																<select class="invitados" name="invitados" multiple>
+																		<option value="-">-</option>
+																</select>
+
+														</div>
+														<div class="col-md-3 text-center">
+																<h4>En Sala</h4>
+																<select class="en_sala" name="es_sala" multiple>
+																		<option value="-">-</option>
+																</select>
+														</div>
+														<div class="col-md-3 text-center">
+																<button id="btn-iniciar" class="btn btn-success" type="submit" name="button">
+																		Iniciar
+																</button>
+														</div>
+												</div>
+								{% else %}
+										<div class='alert alert-danger alert-dismissable'>
+												<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>
+												<h4><i class='icon fa fa-ban'></i> ¡Error!</h4>
+												<p>La Sala es publica.</p>
+										</div>
+								{% endif %}
+						{% else %}
+							<div class='alert alert-danger alert-dismissable'>
+	            		<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>
+	            		<h4><i class='icon fa fa-ban'></i> ¡Error!</h4>
+	            		<p>No existe Sala.</p>
+	            </div>
+						{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+		$(document).ready(function () {
+			usuarios_disponibles();
+			$("#btn-invitar").on("click", function(){
+					invitar_usuarios();
+			})
+			$("#btn-iniciar").on("click", function(){
+					iniciar();
+			})
+		});
+
+		function usuarios_disponibles() {
+        var request = $.ajax({
+            type: "GET",
+            url: "{% url 'get_usuarios_disponibles' %}",
+						data: {
+                    "sala": {{sala_id}},
+                },
+        });
+        request.done(function(response) {
+            $(".usuarios_disponibles").html(response.usuarios_disponibles);
+						$(".invitados").html(response.invitados);
+        });
+    }
+
+		function invitar_usuarios() {
+				var usuarios = $(".usuarios_disponibles").val()
+        var request = $.ajax({
+            type: "GET",
+            url: "{% url 'get_invitar_usuarios' %}",
+						data: {
+                    "usuarios": usuarios,
+                    "sala": {{sala_id}},
+                },
+        });
+        request.done(function(response) {
+            $(".usuarios_disponibles").html(response.usuarios_disponibles);
+            $(".invitados").html(response.invitados);
+
+        });
+    }
+		function iniciar() {
+				var juegos = new Array();
+				$("input:checkbox:checked").each(function() {
+	         juegos.push($(this).val());
+	      });
+
+        var request = $.ajax({
+            type: "GET",
+            url: "{% url 'get_iniciar' %}",
+						data: {
+                    "juegos": juegos,
+                    "sala": {{sala_id}},
+                },
+        });
+        request.done(function(response) {
+
+        });
+    }
+</script>
+{% endblock scripts %}

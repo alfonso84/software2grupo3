@@ -1,0 +1,73 @@
+{% extends "blank.html" %}
+
+{% load staticfiles %}
+
+{% block link %}
+{% endblock link %}
+
+{% block styles %}
+{% endblock styles %}
+
+{% block page %}
+<h1>
+	Salas
+	<small>Publicas</small>
+</h1>
+{% endblock page %}
+
+{% block breadcrumb %}
+<li class="active">Salas publicas</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box box-primary">
+			<div class="box-body">
+				<div class="box-body table-responsive">
+					<table id="sala" class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th>SALA</th>
+								<th>CAPACIDAD</th>
+								<th>JUGADORES CONECTADOS</th>
+								<th>ORGANIZADOR</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>SALA</th>
+								<th>CAPACIDAD</th>
+								<th>JUGADORES CONECTADOS</th>
+								<th>ORGANIZADOR</th>
+								<th></th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+	$(document).ready(function () {
+		var table = $('#sala').dataTable({
+			ajax: {
+				url: "{% url 'sala_publica_data' %}"
+			},
+			aoColumnDefs: [{
+				"bSortable": false,
+				"aTargets": [0, 4]
+			}]
+		})
+
+	});
+</script>
+{% endblock scripts %}

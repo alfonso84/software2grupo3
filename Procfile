@@ -1,0 +1,1 @@
+web: gunicorn groupthree.wsgi --log-file -

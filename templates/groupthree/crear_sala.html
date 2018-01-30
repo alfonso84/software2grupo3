@@ -1,0 +1,79 @@
+{% extends "blank.html" %}
+
+{% load staticfiles %}
+
+{% block link %}
+{% endblock link %}
+
+{% block styles %}
+{% endblock styles %}
+
+{% block page %}
+<h1>
+	Crear
+	<small>Sala</small>
+</h1>
+{% endblock page %}
+
+{% block breadcrumb %}
+<li class="active">Crear Salas</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box box-primary">
+			<div class="box-body">
+				<div class="box-body table-responsive">
+						<form method="POST">
+								<div class="col-md-6">
+										<div class="box box-solid">
+												<div class="box-body" style="margin-top: 50px;">
+														{% csrf_token %}
+														{{ form.non_field_errors }}
+														<div class="form-group  {% if form.capacidad_maxima.errors %}has-error{% endif %}">
+																{{ form.capacidad_maxima.label_tag }}
+																<div class="input-group">
+																		<span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+																		{{ form.capacidad_maxima }}
+																</div>
+														</div>
+														<div class="form-group  {% if form.capacidad_maxima.errors %}has-error{% endif %}">
+																{{ form.es_publica.label_tag }}
+																<div class="input-group">
+																		{{ form.es_publica }}
+																</div>
+														</div>
+												</div>
+										</div>
+										<div class="box box-solid">
+												<div class="box-body">
+														<button class="btn btn-default" type="submit" value="Guardar">
+																<div class="text-primary">
+																		<i class="fa fa-save" style="margin-right: 3px;"></i>
+																		Guardar
+																</div>
+														</button>
+														<a href="/" class="btn btn-default">
+																<div class="text-danger">
+																		<i class="fa fa-times" style="margin-right: 3px;"></i>
+																		Cancelar
+																</div>
+														</a>
+												</div>
+										</div>
+								</div>
+						</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+	$(document).ready(function () {
+	});
+</script>
+{% endblock scripts %}
